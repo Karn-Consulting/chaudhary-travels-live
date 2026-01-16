@@ -27,7 +27,7 @@ export default function GetQuoteSection() {
         <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-2">Get a Quote</h2>
           <p className="text-lg text-muted-foreground">
-            You can also give us a call on <a href="tel:8447748320" className="text-primary hover:underline">8447748320</a>
+            You can also give us a call on <a href="tel:9540726566" className="text-primary hover:underline">9540726566</a>
           </p>
         </div>
 

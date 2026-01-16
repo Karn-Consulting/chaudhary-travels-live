@@ -84,97 +84,76 @@ const features = [
 
 // Trusted Companies
 const trustedCompanies = [
-  { name: "Flipkart", logo: "/images/logos/flipkart.png" },
+  { name: "Flipkart", logo: "/images/logos/flipkart.svg" },
   { name: "Jio", logo: "/images/logos/jio.svg" },
-  { name: "Asian Paints", logo: "/images/logos/asian-paints.png" },
   { name: "Tata", logo: "/images/logos/tata.svg" },
   { name: "Siemens", logo: "/images/logos/siemens.svg" },
   { name: "SBI", logo: "/images/logos/sbi.svg" },
   { name: "Google", logo: "/images/logos/google.svg" },
   { name: "DHL", logo: "/images/logos/dhl.svg" },
-  { name: "Decathlon", logo: "/images/logos/decathlon.png" },
   { name: "Zomato", logo: "/images/logos/zomato.svg" },
-  { name: "Infosys", logo: "/images/logos/infosys.png" },
   { name: "Wipro", logo: "/images/logos/wipro.svg" },
-  { name: "TCS", logo: "/images/logos/tcs.png" },
-  { name: "Maersk", logo: "/images/logos/maersk.png" },
   { name: "EY", logo: "/images/logos/ey.svg" },
-  { name: "Deloitte", logo: "/images/logos/deloitte.png" },
-  { name: "KPMG", logo: "/images/logos/kpmg.png" },
   { name: "Accenture", logo: "/images/logos/accenture.svg" }
 ];
 
-// Testimonials
+// Testimonials - 8 clients with proper images
 const testimonials = [
   {
     id: 1,
     name: "Rajesh Sharma",
     role: "IT Director, TCS",
-    image: "/images/testimonials/client1.webp",
+    image: "/images/testimonials/rajesh-sharma.webp",
     text: "We've been using Chaudhary Travels for our team outings for over 2 years now. The Tempo Travellers are always spotless, drivers are punctual, and the booking process is seamless. Excellent service every single time."
   },
   {
     id: 2,
     name: "Anita Desai",
     role: "HR Manager, Infosys",
-    image: "/images/testimonials/client2.webp",
+    image: "/images/testimonials/anita-desai.webp",
     text: "Finding reliable employee transportation was a challenge until we partnered with Chaudhary Travels. Their fleet is modern, drivers are professional, and the 24/7 support gives us complete peace of mind."
   },
   {
     id: 3,
     name: "Vikram Patel",
     role: "Wedding Planner",
-    image: "/images/testimonials/client3.webp",
+    image: "/images/testimonials/vikram-patel.webp",
     text: "I recommend Chaudhary Travels to all my clients for wedding transportation. They handled 15 vehicles for a destination wedding flawlessly. The coordination was perfect and guests were impressed."
   },
   {
     id: 4,
     name: "Suresh Kumar",
     role: "Admin Head, HDFC Bank",
-    image: "/images/testimonials/client4.webp",
+    image: "/images/testimonials/suresh-kumar.webp",
     text: "The professionalism shown by Chaudhary Travels is unmatched. From the condition of the buses to the behavior of the staff, everything is top-notch. Highly recommended for corporate travel."
   },
   {
     id: 5,
     name: "Meera Reddy",
     role: "Event Coordinator, Wipro",
-    image: "/images/testimonials/client5.webp",
+    image: "/images/testimonials/meera-reddy.webp",
     text: "Organizing transport for 500+ employees for our annual day was a breeze with Chaudhary Travels. Their team managed the logistics perfectly, ensuring everyone arrived on time and in comfort."
   },
   {
     id: 6,
     name: "Amit Verma",
     role: "Operations Manager, Reliance",
-    image: "/images/testimonials/client6.webp",
+    image: "/images/testimonials/amit-verma.webp",
     text: "We rely on Chaudhary Travels for our daily employee commute. Their punctuality and safety standards are commendable. It's a partnership we value greatly."
   },
   {
     id: 7,
     name: "Priya Kapoor",
     role: "Event Director, Wizcraft",
-    image: "/images/testimonials/client7.webp",
+    image: "/images/testimonials/priya-kapoor.webp",
     text: "Managing VIP movement for large concerts is stressful, but Chaudhary Travels makes it look easy. Their luxury fleet and trained chauffeurs are a class apart."
   },
   {
     id: 8,
     name: "Dr. Sameer Gupta",
     role: "Medical Conference Organizer",
-    image: "/images/testimonials/client8.webp",
+    image: "/images/testimonials/sameer-gupta.webp",
     text: "Our international delegates were extremely impressed with the comfort and cleanliness of the buses. The drivers were polite and knew the routes perfectly."
-  },
-  {
-    id: 9,
-    name: "Karan Malhotra",
-    role: "CEO, TechStart",
-    image: "/images/testimonials/client9.webp",
-    text: "I use Chaudhary Travels for all my airport transfers. The cars are always premium, and the chauffeurs understand the value of my time. Highly recommended."
-  },
-  {
-    id: 10,
-    name: "Sneha Reddy",
-    role: "HR Head, Flipkart",
-    image: "/images/testimonials/client10.webp",
-    text: "Safety is our top priority for female employees working late shifts. Chaudhary Travels' tracking systems and verified drivers give us complete confidence."
   }
 ];
 
@@ -241,29 +220,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Flagship Vehicles Banner */}
-        <section className="py-12 md:py-16 bg-secondary/30 border-y border-border">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-              <div className="text-center p-6 md:p-10 bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all group">
-                <h3 className="text-xl md:text-2xl font-serif font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Explore our Flagship Vehicles.</h3>
-                <p className="text-primary font-medium tracking-wide">Now in your City.</p>
-              </div>
-              <div className="text-center p-6 md:p-10 bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all group">
-                <h3 className="text-xl md:text-2xl font-serif font-bold text-foreground mb-2 group-hover:text-primary transition-colors">Explore our Flagship Coach.</h3>
-                <p className="text-primary font-medium tracking-wide">Now in your City.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Fleet Gallery Carousel */}
         <FleetCarousel />
-        
-        {/* Video Gallery */}
-        <VideoGallery />
 
-        {/* Vehicles Section */}
+        {/* Vehicles Section - Our Fleet Premium Vehicles */}
         <section id="vehicles" className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12 md:mb-16">
@@ -275,7 +235,7 @@ export default function Home() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
               {vehicles.map((vehicle) => (
                 <Card key={vehicle.id} className="luxury-card overflow-hidden group h-full flex flex-col">
-<div className="aspect-[4/3] overflow-hidden relative bg-secondary/10">
+                  <div className="aspect-[4/3] overflow-hidden relative bg-secondary/10">
                     <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors z-10" />
                     <img 
                       src={vehicle.image} 
@@ -304,6 +264,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+        
+        {/* Video Gallery */}
+        <VideoGallery />
 
         {/* Features Section */}
         <section className="py-16 md:py-24 bg-secondary/20">
@@ -324,62 +287,27 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Travel Insights Section */}
-        <section className="py-16 md:py-24 bg-secondary/20">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12 md:mb-16">
-              <span className="text-primary text-sm font-bold tracking-widest uppercase mb-2 block">Our Blog</span>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-6">Travel Insights</h2>
-              <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
-            </div>
+        {/* Get Quote Section */}
+        <GetQuoteSection />
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {blogs.slice(0, 3).map((blog) => (
-                <Link key={blog.id} href={`/blogs/${blog.id}`}>
-                  <div className="group cursor-pointer bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-border h-full flex flex-col">
-                    <div className="aspect-[16/10] overflow-hidden relative">
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
-                      <img 
-                        src={blog.heroImage} 
-                        alt={blog.title}
-                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div className="absolute top-4 left-4 z-20 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        {blog.category}
-                      </div>
-                    </div>
-                    <div className="p-6 flex flex-col flex-grow">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                        <span>{blog.date}</span>
-                        <span>•</span>
-                        <span>{blog.author}</span>
-                      </div>
-                      <h3 className="text-xl font-serif font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
-                        {blog.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm line-clamp-3 mb-4 flex-grow">
-                        {blog.excerpt}
-                      </p>
-                      <div className="flex items-center text-primary font-semibold text-sm mt-auto group-hover:translate-x-2 transition-transform">
-                        Read Article <ArrowRight className="w-4 h-4 ml-2" />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+        {/* Trusted Companies - Above Testimonials */}
+        <section className="py-16 bg-white border-t border-border">
+          <div className="container mx-auto px-4">
+            <p className="text-center text-muted-foreground uppercase tracking-widest text-sm mb-10 font-medium">Trusted by Industry Leaders</p>
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+              {trustedCompanies.map((company, index) => (
+                <img 
+                  key={index}
+                  src={company.logo} 
+                  alt={company.name} 
+                  className="h-8 md:h-12 object-contain hover:scale-110 transition-transform"
+                />
               ))}
-            </div>
-            
-            <div className="text-center mt-12">
-              <Link href="/blogs">
-                <Button variant="outline" className="px-8 py-6 rounded-full border-primary text-primary hover:bg-primary hover:text-white transition-all text-lg font-semibold">
-                  View All Articles
-                </Button>
-              </Link>
             </div>
           </div>
         </section>
 
-        {/* Client Stories Section */}
+        {/* Client Stories Section - Testimonials */}
         <section className="py-16 md:py-24 bg-background overflow-hidden">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
@@ -428,44 +356,58 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Get Quote Section */}
-        <GetQuoteSection />
-
-        {/* Trusted Companies */}
-        <section className="py-16 bg-white border-t border-border">
-          <div className="container mx-auto px-4">
-            <p className="text-center text-muted-foreground uppercase tracking-widest text-sm mb-10 font-medium">Trusted by Industry Leaders</p>
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
-              {trustedCompanies.map((company, index) => (
-                <img 
-                  key={index}
-                  src={company.logo} 
-                  alt={company.name} 
-                  className="h-8 md:h-12 object-contain hover:scale-110 transition-transform"
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Founder Section */}
+        {/* Founder Section - Nitin Chaudhary */}
         <FounderSection />
 
-        {/* CTA Section */}
-        <section className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/images/pattern-overlay.png')] opacity-10" />
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <h2 className="text-3xl md:text-5xl font-serif font-bold mb-6">Ready to Experience Luxury?</h2>
-            <p className="text-xl md:text-2xl mb-10 max-w-2xl mx-auto opacity-90 font-light">
-              Book your premium vehicle today and travel with unmatched comfort and style.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href={`tel:${PHONE_1}`} className="bg-white text-primary px-8 py-4 rounded-md font-bold text-lg hover:bg-secondary transition-colors shadow-lg flex items-center justify-center gap-2">
-                <Phone className="w-5 h-5" /> Call Now
-              </a>
-              <Link href="/get-quote">
-                <Button variant="outline" className="px-8 py-4 rounded-md font-bold text-lg border-white text-white hover:bg-white hover:text-primary h-auto w-full sm:w-auto">
-                  Get a Quote
+        {/* Travel Insights Section - Blog */}
+        <section className="py-16 md:py-24 bg-secondary/20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12 md:mb-16">
+              <span className="text-primary text-sm font-bold tracking-widest uppercase mb-2 block">Our Blog</span>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-6">Travel Insights</h2>
+              <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {blogs.slice(0, 3).map((blog) => (
+                <Link key={blog.id} href={`/blogs/${blog.id}`}>
+                  <div className="group cursor-pointer bg-card rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-border h-full flex flex-col">
+                    <div className="aspect-[16/10] overflow-hidden relative">
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10" />
+                      <img 
+                        src={blog.heroImage} 
+                        alt={blog.title}
+                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute top-4 left-4 z-20 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        {blog.category}
+                      </div>
+                    </div>
+                    <div className="p-6 flex flex-col flex-grow">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                        <span>{blog.date}</span>
+                        <span>•</span>
+                        <span>{blog.author}</span>
+                      </div>
+                      <h3 className="text-xl font-serif font-bold text-foreground mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                        {blog.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm line-clamp-3 mb-4 flex-grow">
+                        {blog.excerpt}
+                      </p>
+                      <div className="flex items-center text-primary font-semibold text-sm mt-auto group-hover:translate-x-2 transition-transform">
+                        Read Article <ArrowRight className="w-4 h-4 ml-2" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            
+            <div className="text-center mt-12">
+              <Link href="/blogs">
+                <Button variant="outline" className="px-8 py-6 rounded-full border-primary text-primary hover:bg-primary hover:text-white transition-all text-lg font-semibold">
+                  View All Articles
                 </Button>
               </Link>
             </div>
