@@ -80,12 +80,12 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-xl font-serif font-bold text-[#D4AF37]">Our Services</h4>
             <ul className="space-y-3">
-              <li className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Luxury Tempo Traveller</li>
-              <li className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Corporate Bus Rental</li>
-              <li className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Wedding Transportation</li>
-              <li className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Employee Commute</li>
-              <li className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Outstation Trips</li>
-              <li className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Airport Transfers</li>
+              <li><Link href="/get-quote" className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Luxury Tempo Traveller</Link></li>
+              <li><Link href="/get-quote" className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Corporate Bus Rental</Link></li>
+              <li><Link href="/get-quote" className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Wedding Transportation</Link></li>
+              <li><Link href="/get-quote" className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Employee Commute</Link></li>
+              <li><Link href="/get-quote" className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Outstation Trips</Link></li>
+              <li><Link href="/get-quote" className="text-[#8892B0] hover:text-[#D4AF37] transition-colors cursor-pointer">Airport Transfers</Link></li>
             </ul>
           </div>
 

@@ -36,6 +36,11 @@ export default function WelcomePopup() {
       toast.error("Please fill in your name and phone number");
       return;
     }
+    
+    // Send to WhatsApp
+    const message = `New Lead from Welcome Popup:%0A%0AName: ${formData.name}%0APhone: ${formData.phone}%0AFrom: ${formData.from || 'Not specified'}%0ATo: ${formData.to || 'Not specified'}`;
+    window.open(`https://wa.me/919540726566?text=${message}`, '_blank');
+    
     toast.success("Thank you! We'll contact you within 30 minutes with the best quote.");
     handleClose();
   };
@@ -49,8 +54,9 @@ export default function WelcomePopup() {
         <div className="relative h-40 bg-gradient-to-r from-[#8B7355] to-[#6B5A45] overflow-hidden">
           <div className="absolute inset-0 bg-[url('/images/hero-luxury-fleet.webp')] bg-cover bg-center opacity-30" />
           <button
+            type="button"
             onClick={handleClose}
-            className="absolute top-3 right-3 bg-white/20 hover:bg-white/40 rounded-full p-2 transition-colors z-10"
+            className="absolute top-3 right-3 bg-white/20 hover:bg-white/40 rounded-full p-2 transition-colors z-50 cursor-pointer"
             aria-label="Close popup"
           >
             <X className="w-5 h-5 text-white" />

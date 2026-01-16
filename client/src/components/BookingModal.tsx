@@ -23,6 +23,11 @@ export default function BookingModal({ isOpen, onClose, vehicleName }: BookingMo
       toast.error("Please fill in all required fields");
       return;
     }
+    
+    // Send to WhatsApp
+    const message = `New Booking Request:%0A%0AVehicle: ${vehicleName || "vehicle"}%0A%0AName: ${formData.name}%0AEmail: ${formData.email || 'Not provided'}%0APhone: ${formData.phone}`;
+    window.open(`https://wa.me/919540726566?text=${message}`, '_blank');
+    
     toast.success(`Booking request for ${vehicleName || "vehicle"} submitted! We'll contact you within 30 minutes.`);
     onClose();
     setFormData({ name: "", email: "", phone: "" });

@@ -100,6 +100,11 @@ export default function PopularRoutes() {
       toast.error("Please fill in all required fields");
       return;
     }
+    
+    // Send to WhatsApp
+    const message = `New Lead from Popular Routes:%0A%0ARoute: ${selectedRoute?.from} to ${selectedRoute?.to}%0ADistance: ${selectedRoute?.distance}%0ADuration: ${selectedRoute?.duration}%0A%0AName: ${formData.name}%0AEmail: ${formData.email || 'Not provided'}%0APhone: ${formData.phone}`;
+    window.open(`https://wa.me/919540726566?text=${message}`, '_blank');
+    
     toast.success(`Quote request for ${selectedRoute?.from} to ${selectedRoute?.to} submitted! We'll contact you shortly.`);
     setShowModal(false);
     setFormData({ name: "", email: "", phone: "" });
