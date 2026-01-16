@@ -23,6 +23,7 @@ import VideoGallery from "@/components/VideoGallery";
 import Footer from "@/components/Footer";
 import GetQuoteSection from "@/components/GetQuoteSection";
 import PopularRoutes from "@/components/PopularRoutes";
+import BookingModal from "@/components/BookingModal";
 import { blogs } from "@/data/blogs";
 
 const PHONE_1 = "9540726566";
@@ -161,6 +162,13 @@ const testimonials = [
 export default function Home() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<string>("");
+
+  const handleBookNow = (vehicleName: string) => {
+    setSelectedVehicle(vehicleName);
+    setShowBookingModal(true);
+  };
 
   const nextTestimonial = () => {
     if (isAnimating) return;
@@ -255,7 +263,7 @@ export default function Home() {
                     <Button 
                       variant="outline" 
                       className="w-full border-primary/30 hover:border-primary hover:bg-primary/5 text-foreground group-hover:text-primary transition-colors"
-                      onClick={() => document.getElementById('get-quote')?.scrollIntoView({ behavior: 'smooth' })}
+                      onClick={() => handleBookNow(vehicle.name)}
                     >
                       Book Now <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
@@ -418,6 +426,12 @@ export default function Home() {
           </div>
         </section>
       </main>
+
+      <BookingModal 
+        isOpen={showBookingModal} 
+        onClose={() => setShowBookingModal(false)} 
+        vehicleName={selectedVehicle} 
+      />
 
       <Footer />
     </div>
