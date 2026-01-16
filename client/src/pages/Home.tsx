@@ -22,6 +22,7 @@ import FounderSection from "@/components/FounderSection";
 import VideoGallery from "@/components/VideoGallery";
 import Footer from "@/components/Footer";
 import GetQuoteSection from "@/components/GetQuoteSection";
+import PopularRoutes from "@/components/PopularRoutes";
 import { blogs } from "@/data/blogs";
 
 const PHONE_1 = "9540726566";
@@ -289,6 +290,9 @@ export default function Home() {
 
         {/* Get Quote Section */}
         <GetQuoteSection />
+
+        {/* Popular Routes Section */}
+        <PopularRoutes />
 
         {/* Trusted Companies - Above Testimonials */}
         <section className="py-16 bg-white border-t border-border">
