@@ -194,7 +194,7 @@ export default function Home() {
 
       <main className="flex-grow">
         {/* Hero Section with Quote Form */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 md:py-0">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 z-10" />
@@ -354,9 +354,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Get Quote Section */}
-        <GetQuoteSection />
 
         {/* Popular Routes Section */}
         <PopularRoutes />
