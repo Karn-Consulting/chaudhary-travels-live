@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +9,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function GetQuote() {
+  // Scroll to top when page loads
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [formData, setFormData] = useState({
     tripType: "round_trip",
     from: "",
