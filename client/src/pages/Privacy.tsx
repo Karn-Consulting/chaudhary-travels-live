@@ -62,7 +62,7 @@ export default function Privacy() {
 
               <h3>6. Your Rights</h3>
               <p>
-                You have the right to access, correct, or delete your personal information held by us. You may also opt-out of receiving marketing communications at any time. To exercise these rights, please contact us at info@chaudharytravels.in.
+                You have the right to access, correct, or delete your personal information held by us. You may also opt-out of receiving marketing communications at any time. To exercise these rights, please contact us at info@chaudharytravels.co.in.
               </p>
 
               <h3>7. Changes to This Policy</h3>
@@ -76,7 +76,7 @@ export default function Privacy() {
               </p>
               <p>
                 <strong>Chaudhary Travels</strong><br />
-                Email: info@chaudharytravels.in<br />
+                Email: info@chaudharytravels.co.in<br />
                 Phone: 9540726566<br />
                 Address: A/28, Second Floor, Gali No 13, Mandawali Unchepar, East Delhi, Delhi, 110092
               </p>
