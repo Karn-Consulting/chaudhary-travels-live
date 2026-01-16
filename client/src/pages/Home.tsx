@@ -24,6 +24,7 @@ import Footer from "@/components/Footer";
 import GetQuoteSection from "@/components/GetQuoteSection";
 import PopularRoutes from "@/components/PopularRoutes";
 import BookingModal from "@/components/BookingModal";
+import WelcomePopup from "@/components/WelcomePopup";
 import { blogs } from "@/data/blogs";
 
 const PHONE_1 = "9540726566";
@@ -488,6 +489,8 @@ export default function Home() {
         onClose={() => setShowBookingModal(false)} 
         vehicleName={selectedVehicle} 
       />
+
+      <WelcomePopup />
 
       <Footer />
     </div>
