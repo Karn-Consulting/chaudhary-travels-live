@@ -193,11 +193,11 @@ export default function Home() {
       <Header />
 
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="relative h-[90vh] md:h-screen flex items-center justify-center overflow-hidden">
+        {/* Hero Section with Quote Form */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20 md:py-0">
           {/* Background Image with Overlay */}
           <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 z-10" />
             <img 
               src="/images/hero-luxury-fleet.webp" 
               alt="Luxury Fleet at The Imperial Delhi" 
@@ -206,24 +206,83 @@ export default function Home() {
           </div>
 
           <div className="container mx-auto px-4 relative z-20">
-            <div className="max-w-3xl animate-in slide-in-from-left-10 duration-1000 fade-in text-center md:text-left">
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg">
-                Experience Best in Class Vehicles<br />
-                <span className="text-gradient-gold drop-shadow-none">ON RENT IN INDIA</span>
-              </h1>
-              <p className="text-white/90 text-lg md:text-2xl mb-8 md:mb-10 leading-relaxed max-w-2xl font-light drop-shadow-md mx-auto md:mx-0">
-                Your personal logistics and mobile sanctuary provider. We don't just sell rides; we sell status, peace of mind, and productivity.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <a href={`tel:${PHONE_1}`} className="btn-gold px-8 py-4 rounded-md font-semibold text-lg flex items-center justify-center gap-2 w-full sm:w-auto">
-                  <Phone className="w-5 h-5" /> CALL US
-                </a>
-                <span className="text-white/80 self-center font-serif italic text-lg hidden sm:inline">or</span>
-                <Link href="/get-quote">
-                  <Button variant="outline" className="px-8 py-4 rounded-md font-semibold text-lg border-primary text-primary hover:bg-primary hover:text-primary-foreground h-auto w-full sm:w-auto">
-                    GET PRICING
-                  </Button>
-                </Link>
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              {/* Left Side - Text Content */}
+              <div className="animate-in slide-in-from-left-10 duration-1000 fade-in text-center lg:text-left">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-4 md:mb-6 leading-tight drop-shadow-lg">
+                  Experience Best in Class Vehicles<br />
+                  <span className="text-gradient-gold drop-shadow-none">ON RENT IN INDIA</span>
+                </h1>
+                <p className="text-white/90 text-base md:text-xl mb-6 leading-relaxed max-w-xl font-light drop-shadow-md mx-auto lg:mx-0">
+                  Your personal logistics and mobile sanctuary provider. We don't just sell rides; we sell status, peace of mind, and productivity.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <a href={`tel:${PHONE_1}`} className="btn-gold px-6 py-3 rounded-md font-semibold text-base flex items-center justify-center gap-2">
+                    <Phone className="w-5 h-5" /> CALL US
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Side - Quote Form */}
+              <div className="animate-in slide-in-from-right-10 duration-1000 fade-in">
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 md:p-8 max-w-md mx-auto lg:ml-auto">
+                  <h2 className="text-2xl font-serif font-bold text-foreground mb-2 text-center">Get a Quote</h2>
+                  <p className="text-muted-foreground text-sm mb-6 text-center">Fill in your details for instant pricing</p>
+                  
+                  <form className="space-y-4">
+                    <div className="grid grid-cols-2 gap-2 p-1 bg-secondary rounded-lg">
+                      <button
+                        type="button"
+                        className="px-4 py-2 rounded-md font-semibold text-sm bg-white text-primary shadow-sm"
+                      >
+                        Round Trip
+                      </button>
+                      <button
+                        type="button"
+                        className="px-4 py-2 rounded-md font-semibold text-sm text-muted-foreground hover:text-foreground"
+                      >
+                        One Way
+                      </button>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-xs font-medium text-foreground/70 mb-1 block">From *</label>
+                        <Input placeholder="Pickup City" className="h-11 bg-gray-50" />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-foreground/70 mb-1 block">To *</label>
+                        <Input placeholder="Drop City" className="h-11 bg-gray-50" />
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-medium text-foreground/70 mb-1 block">Start Date *</label>
+                          <Input type="date" className="h-11 bg-gray-50" />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-foreground/70 mb-1 block">Return Date</label>
+                          <Input type="date" className="h-11 bg-gray-50" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium text-foreground/70 mb-1 block">Mobile Number *</label>
+                        <Input placeholder="Your Mobile Number" className="h-11 bg-gray-50" />
+                      </div>
+                    </div>
+
+                    <Button 
+                      type="button"
+                      className="w-full bg-[#8B7355] hover:bg-[#6B5A45] text-white font-bold h-12 text-base"
+                      onClick={() => toast.success("Quote request submitted! We'll contact you within 30 minutes.")}
+                    >
+                      GET FREE QUOTE
+                    </Button>
+                    
+                    <p className="text-xs text-center text-muted-foreground">
+                      We'll contact you within 30 minutes
+                    </p>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
