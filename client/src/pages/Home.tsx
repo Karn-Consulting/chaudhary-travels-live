@@ -165,6 +165,7 @@ export default function Home() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<string>("");
+  const [tripType, setTripType] = useState<"round" | "oneway">("round");
 
   const handleBookNow = (vehicleName: string) => {
     setSelectedVehicle(vehicleName);
@@ -234,13 +235,23 @@ export default function Home() {
                     <div className="grid grid-cols-2 gap-2 p-1 bg-secondary rounded-lg">
                       <button
                         type="button"
-                        className="px-4 py-2 rounded-md font-semibold text-sm bg-white text-primary shadow-sm"
+                        onClick={() => setTripType("round")}
+                        className={`px-4 py-2 rounded-md font-semibold text-sm transition-all ${
+                          tripType === "round" 
+                            ? "bg-white text-primary shadow-sm" 
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
                       >
                         Round Trip
                       </button>
                       <button
                         type="button"
-                        className="px-4 py-2 rounded-md font-semibold text-sm text-muted-foreground hover:text-foreground"
+                        onClick={() => setTripType("oneway")}
+                        className={`px-4 py-2 rounded-md font-semibold text-sm transition-all ${
+                          tripType === "oneway" 
+                            ? "bg-white text-primary shadow-sm" 
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
                       >
                         One Way
                       </button>
@@ -255,15 +266,17 @@ export default function Home() {
                         <label className="text-xs font-medium text-foreground/70 mb-1 block">To *</label>
                         <Input placeholder="Drop City" className="h-11 bg-gray-50" />
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className={`grid ${tripType === "round" ? "grid-cols-2" : "grid-cols-1"} gap-3`}>
                         <div>
                           <label className="text-xs font-medium text-foreground/70 mb-1 block">Start Date *</label>
                           <Input type="date" className="h-11 bg-gray-50" />
                         </div>
-                        <div>
-                          <label className="text-xs font-medium text-foreground/70 mb-1 block">Return Date</label>
-                          <Input type="date" className="h-11 bg-gray-50" />
-                        </div>
+                        {tripType === "round" && (
+                          <div>
+                            <label className="text-xs font-medium text-foreground/70 mb-1 block">Return Date</label>
+                            <Input type="date" className="h-11 bg-gray-50" />
+                          </div>
+                        )}
                       </div>
                       <div>
                         <label className="text-xs font-medium text-foreground/70 mb-1 block">Mobile Number *</label>
