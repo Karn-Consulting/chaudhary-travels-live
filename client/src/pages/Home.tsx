@@ -23,6 +23,7 @@ import VideoGallery from "@/components/VideoGallery";
 import Footer from "@/components/Footer";
 import GetQuoteSection from "@/components/GetQuoteSection";
 import PopularRoutes from "@/components/PopularRoutes";
+import CharDhamSection from "@/components/CharDhamSection";
 import BookingModal from "@/components/BookingModal";
 import WelcomePopup from "@/components/WelcomePopup";
 import { blogs } from "@/data/blogs";
@@ -371,6 +372,9 @@ export default function Home() {
 
         {/* Popular Routes Section */}
         <PopularRoutes />
+
+        {/* Char Dham Yatra Section */}
+        <CharDhamSection />
 
         {/* Trusted Companies - Above Testimonials */}
         <section className="py-16 bg-white border-t border-border">

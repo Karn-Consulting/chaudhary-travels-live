@@ -14,6 +14,7 @@ import FAQ from "./pages/FAQ";
 import GetQuote from "./pages/GetQuote";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import CharDhamYatra from "./pages/CharDhamYatra";
 import NotFound from "@/pages/NotFound";
 
 
@@ -30,6 +31,7 @@ function Router() {
         <Route path="/get-quote" component={GetQuote} />
         <Route path="/terms" component={Terms} />
         <Route path="/privacy" component={Privacy} />
+        <Route path="/char-dham-yatra" component={CharDhamYatra} />
         <Route path="/404" component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />
