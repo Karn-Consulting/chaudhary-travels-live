@@ -80,7 +80,7 @@ export default function CharDhamYatra() {
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 z-10" />
             <img 
-              src="/images/chardham/chardham-hero.png" 
+              src="/images/chardham/chardham-hero.jpg" 
               alt="Char Dham Yatra" 
               className="w-full h-full object-cover"
             />
