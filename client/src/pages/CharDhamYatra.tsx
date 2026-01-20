@@ -13,7 +13,6 @@ export default function CharDhamYatra() {
     name: "",
     email: "",
     mobile: "",
-    travelDate: "",
     groupSize: ""
   });
 
@@ -28,12 +27,11 @@ export default function CharDhamYatra() {
       `Name: ${formData.name}%0A` +
       `Email: ${formData.email}%0A` +
       `Mobile: ${formData.mobile}%0A` +
-      `Travel Date: ${formData.travelDate}%0A` +
       `Group Size: ${formData.groupSize}`;
     
     window.open(`https://wa.me/91${PHONE_NUMBER}?text=${message}`, '_blank');
     setShowBookingModal(false);
-    setFormData({ name: "", email: "", mobile: "", travelDate: "", groupSize: "" });
+    setFormData({ name: "", email: "", mobile: "", groupSize: "" });
   };
 
   const dhams = [
@@ -263,15 +261,6 @@ export default function CharDhamYatra() {
                     placeholder="Your Mobile Number"
                     value={formData.mobile}
                     onChange={(e) => setFormData({...formData, mobile: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-foreground/70 mb-1 block">Preferred Travel Date *</label>
-                  <Input 
-                    required
-                    type="date"
-                    value={formData.travelDate}
-                    onChange={(e) => setFormData({...formData, travelDate: e.target.value})}
                   />
                 </div>
                 <div>
