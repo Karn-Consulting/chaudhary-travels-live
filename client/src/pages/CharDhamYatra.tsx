@@ -9,6 +9,7 @@ const PHONE_NUMBER = "9540726566";
 
 export default function CharDhamYatra() {
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedDham, setSelectedDham] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -23,7 +24,9 @@ export default function CharDhamYatra() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    const dhamText = selectedDham ? `Shrine: ${selectedDham}%0A` : "";
     const message = `*Char Dham Yatra Booking Request*%0A%0A` +
+      dhamText +
       `Name: ${formData.name}%0A` +
       `Email: ${formData.email}%0A` +
       `Mobile: ${formData.mobile}%0A` +
