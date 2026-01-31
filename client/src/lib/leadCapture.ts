@@ -111,29 +111,29 @@ function generateWhatsAppUrl(data: LeadData): string {
 /**
  * Open WhatsApp with pre-filled message
  */
-function openWhatsApp(data: LeadData): void {
+export function openWhatsApp(data: LeadData): void {
   const url = generateWhatsAppUrl(data);
   window.open(url, "_blank");
 }
 
 /**
  * Main function to capture and process leads
- * Sends email notification via Web3Forms first, then opens WhatsApp as backup
+ * Sends email notification via Web3Forms only - WhatsApp is handled separately by components
  */
-export async function captureLead(data: LeadData): Promise<{ emailSent: boolean; whatsappOpened: boolean }> {
+export async function captureLead(data: LeadData): Promise<{ emailSent: boolean; whatsappUrl: string }> {
   console.log("🚀 Starting lead capture process...", data);
   
-  // Send email notification first
+  // Send email notification first and wait for it
   const emailSent = await sendEmailNotification(data);
   
-  // Open WhatsApp as additional notification channel
-  openWhatsApp(data);
+  // Generate WhatsApp URL but don't open it - let the component decide when
+  const whatsappUrl = generateWhatsAppUrl(data);
   
   console.log("✅ Lead capture complete. Email sent:", emailSent);
   
   return {
     emailSent,
-    whatsappOpened: true
+    whatsappUrl
   };
 }
 

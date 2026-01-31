@@ -27,7 +27,7 @@ import CharDhamSection from "@/components/CharDhamSection";
 import BookingModal from "@/components/BookingModal";
 import WelcomePopup from "@/components/WelcomePopup";
 import CallNowPopup from "@/components/CallNowPopup";
-import { captureLead } from "@/lib/leadCapture";
+import { captureLead, openWhatsApp } from "@/lib/leadCapture";
 import { blogs } from "@/data/blogs";
 
 const PHONE_1 = "9540726566";
@@ -217,6 +217,11 @@ export default function Home() {
       if (result.emailSent) {
         // Show success popup with call option
         setShowCallPopup(true);
+        
+        // Open WhatsApp in new tab after a short delay
+        setTimeout(() => {
+          window.open(result.whatsappUrl, "_blank");
+        }, 500);
         
         // Reset form
         setHeroForm({
