@@ -3,7 +3,7 @@
  * 
  * This utility handles lead submissions through multiple channels:
  * 1. Email notification via Web3Forms (free, no backend needed)
- * 2. WhatsApp message (fallback - opens WhatsApp with pre-filled message)
+ * 2. WhatsApp message (opens WhatsApp with pre-filled message)
  * 
  * Web3Forms sends all leads to: info@chaudharytravels.co.in
  */
@@ -11,7 +11,6 @@
 // Configuration
 const WHATSAPP_NUMBER = "919540726566";
 const WEB3FORMS_ACCESS_KEY = "be826425-a062-4b4d-812e-b366c3c514b4";
-const RECIPIENT_EMAIL = "info@chaudharytravels.co.in";
 
 export interface LeadData {
   name?: string;
@@ -32,48 +31,52 @@ export interface LeadData {
 
 /**
  * Send lead data via email using Web3Forms
+ * Web3Forms automatically sends to the email associated with the access key
  */
 async function sendEmailNotification(data: LeadData): Promise<boolean> {
   try {
+    // Build the form data object
+    const formData: Record<string, string> = {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: `🚗 New Lead from ${data.source} - Chaudhary Travels`,
+      from_name: "Chaudhary Travels Website",
+      name: data.name || "Not provided",
+      phone: data.phone,
+      email: data.email || "Not provided",
+      from_location: data.from || "Not provided",
+      to_location: data.to || "Not provided",
+      travel_date: data.date || "Not provided",
+      return_date: data.returnDate || "Not provided",
+      vehicle_type: data.vehicleType || "Not provided",
+      trip_type: data.tripType || "Not provided",
+      ac_preference: data.acType || "Not provided",
+      company_name: data.company || "Not provided",
+      number_of_employees: data.employees || "Not provided",
+      additional_message: data.message || "Not provided",
+      lead_source: data.source,
+      submission_time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+    };
+
+    console.log("📧 Sending lead to Web3Forms...", formData);
+
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `🚗 New Lead from ${data.source} - Chaudhary Travels`,
-        from_name: "Chaudhary Travels Website",
-        to: RECIPIENT_EMAIL,
-        // Lead details
-        "Customer Name": data.name || "Not provided",
-        "Phone Number": data.phone,
-        "Email": data.email || "Not provided",
-        "From Location": data.from || "Not provided",
-        "To Location": data.to || "Not provided",
-        "Travel Date": data.date || "Not provided",
-        "Return Date": data.returnDate || "Not provided",
-        "Vehicle Type": data.vehicleType || "Not provided",
-        "Trip Type": data.tripType || "Not provided",
-        "AC Preference": data.acType || "Not provided",
-        "Company Name": data.company || "Not provided",
-        "Number of Employees": data.employees || "Not provided",
-        "Additional Message": data.message || "Not provided",
-        "Lead Source": data.source,
-        "Submission Time": new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-        // Redirect back (optional - for form submissions)
-        redirect: false
-      })
+      body: JSON.stringify(formData)
     });
 
     const result = await response.json();
+    
+    console.log("📧 Web3Forms response:", result);
     
     if (result.success) {
       console.log("✅ Lead sent to email successfully via Web3Forms");
       return true;
     } else {
-      console.error("❌ Web3Forms error:", result.message);
+      console.error("❌ Web3Forms error:", result.message || result);
       return false;
     }
   } catch (error) {
@@ -118,11 +121,15 @@ function openWhatsApp(data: LeadData): void {
  * Sends email notification via Web3Forms first, then opens WhatsApp as backup
  */
 export async function captureLead(data: LeadData): Promise<{ emailSent: boolean; whatsappOpened: boolean }> {
+  console.log("🚀 Starting lead capture process...", data);
+  
   // Send email notification first
   const emailSent = await sendEmailNotification(data);
   
   // Open WhatsApp as additional notification channel
   openWhatsApp(data);
+  
+  console.log("✅ Lead capture complete. Email sent:", emailSent);
   
   return {
     emailSent,
@@ -135,6 +142,7 @@ export async function captureLead(data: LeadData): Promise<{ emailSent: boolean;
  * Use this for forms where WhatsApp popup is not desired
  */
 export async function captureLeadEmailOnly(data: LeadData): Promise<boolean> {
+  console.log("🚀 Starting email-only lead capture...", data);
   return sendEmailNotification(data);
 }
 

@@ -26,6 +26,8 @@ import PopularRoutes from "@/components/PopularRoutes";
 import CharDhamSection from "@/components/CharDhamSection";
 import BookingModal from "@/components/BookingModal";
 import WelcomePopup from "@/components/WelcomePopup";
+import CallNowPopup from "@/components/CallNowPopup";
+import { captureLead } from "@/lib/leadCapture";
 import { blogs } from "@/data/blogs";
 
 const PHONE_1 = "9540726566";
@@ -167,10 +169,72 @@ export default function Home() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<string>("");
   const [tripType, setTripType] = useState<"round" | "oneway">("round");
+  const [showCallPopup, setShowCallPopup] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Hero form state
+  const [heroForm, setHeroForm] = useState({
+    from: "",
+    to: "",
+    startDate: "",
+    returnDate: "",
+    phone: ""
+  });
 
   const handleBookNow = (vehicleName: string) => {
     setSelectedVehicle(vehicleName);
     setShowBookingModal(true);
+  };
+
+  const handleHeroFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validation
+    if (!heroForm.from || !heroForm.to || !heroForm.phone) {
+      toast.error("Please fill in From, To, and Mobile Number fields");
+      return;
+    }
+    
+    if (heroForm.phone.length < 10) {
+      toast.error("Please enter a valid 10-digit mobile number");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // Send lead via Web3Forms + WhatsApp
+      const result = await captureLead({
+        phone: heroForm.phone,
+        from: heroForm.from,
+        to: heroForm.to,
+        date: heroForm.startDate || undefined,
+        returnDate: tripType === "round" ? heroForm.returnDate || undefined : undefined,
+        tripType: tripType === "round" ? "Round Trip" : "One Way",
+        source: "Home Page - Hero Section Quote Form"
+      });
+      
+      if (result.emailSent) {
+        // Show success popup with call option
+        setShowCallPopup(true);
+        
+        // Reset form
+        setHeroForm({
+          from: "",
+          to: "",
+          startDate: "",
+          returnDate: "",
+          phone: ""
+        });
+      } else {
+        toast.error("Something went wrong. Please try again or call us directly.");
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast.error("Something went wrong. Please try again or call us directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const nextTestimonial = () => {
@@ -232,7 +296,7 @@ export default function Home() {
                   <h2 className="text-2xl font-serif font-bold text-foreground mb-2 text-center">Get a Quote</h2>
                   <p className="text-muted-foreground text-sm mb-6 text-center">Fill in your details for instant pricing</p>
                   
-                  <form className="space-y-4">
+                  <form onSubmit={handleHeroFormSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-2 p-1 bg-secondary rounded-lg">
                       <button
                         type="button"
@@ -261,36 +325,70 @@ export default function Home() {
                     <div className="space-y-3">
                       <div>
                         <label className="text-xs font-medium text-foreground/70 mb-1 block">From *</label>
-                        <Input placeholder="Pickup City" className="h-11 bg-gray-50" />
+                        <Input 
+                          placeholder="Pickup City" 
+                          className="h-11 bg-gray-50"
+                          value={heroForm.from}
+                          onChange={(e) => setHeroForm({ ...heroForm, from: e.target.value })}
+                          disabled={isSubmitting}
+                          required
+                        />
                       </div>
                       <div>
                         <label className="text-xs font-medium text-foreground/70 mb-1 block">To *</label>
-                        <Input placeholder="Drop City" className="h-11 bg-gray-50" />
+                        <Input 
+                          placeholder="Drop City" 
+                          className="h-11 bg-gray-50"
+                          value={heroForm.to}
+                          onChange={(e) => setHeroForm({ ...heroForm, to: e.target.value })}
+                          disabled={isSubmitting}
+                          required
+                        />
                       </div>
                       <div className={`grid ${tripType === "round" ? "grid-cols-2" : "grid-cols-1"} gap-3`}>
                         <div>
                           <label className="text-xs font-medium text-foreground/70 mb-1 block">Start Date *</label>
-                          <Input type="date" className="h-11 bg-gray-50" />
+                          <Input 
+                            type="date" 
+                            className="h-11 bg-gray-50"
+                            value={heroForm.startDate}
+                            onChange={(e) => setHeroForm({ ...heroForm, startDate: e.target.value })}
+                            disabled={isSubmitting}
+                          />
                         </div>
                         {tripType === "round" && (
                           <div>
                             <label className="text-xs font-medium text-foreground/70 mb-1 block">Return Date</label>
-                            <Input type="date" className="h-11 bg-gray-50" />
+                            <Input 
+                              type="date" 
+                              className="h-11 bg-gray-50"
+                              value={heroForm.returnDate}
+                              onChange={(e) => setHeroForm({ ...heroForm, returnDate: e.target.value })}
+                              disabled={isSubmitting}
+                            />
                           </div>
                         )}
                       </div>
                       <div>
                         <label className="text-xs font-medium text-foreground/70 mb-1 block">Mobile Number *</label>
-                        <Input placeholder="Your Mobile Number" className="h-11 bg-gray-50" />
+                        <Input 
+                          placeholder="Your Mobile Number" 
+                          className="h-11 bg-gray-50"
+                          type="tel"
+                          value={heroForm.phone}
+                          onChange={(e) => setHeroForm({ ...heroForm, phone: e.target.value })}
+                          disabled={isSubmitting}
+                          required
+                        />
                       </div>
                     </div>
 
                     <Button 
-                      type="button"
+                      type="submit"
+                      disabled={isSubmitting}
                       className="w-full bg-[#8B7355] hover:bg-[#6B5A45] text-white font-bold h-12 text-base"
-                      onClick={() => toast.success("Quote request submitted! We'll contact you within 30 minutes.")}
                     >
-                      GET FREE QUOTE
+                      {isSubmitting ? "SUBMITTING..." : "GET FREE QUOTE"}
                     </Button>
                     
                     <p className="text-xs text-center text-muted-foreground">
@@ -347,7 +445,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        
+
         {/* Video Gallery */}
         <VideoGallery />
 
@@ -508,6 +606,12 @@ export default function Home() {
       />
 
       <WelcomePopup />
+      
+      <CallNowPopup 
+        isOpen={showCallPopup}
+        onClose={() => setShowCallPopup(false)}
+        phoneNumber={PHONE_1}
+      />
 
       <Footer />
     </div>
