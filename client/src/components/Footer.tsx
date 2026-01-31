@@ -96,8 +96,15 @@ export default function Footer() {
               <div className="flex items-start gap-3 text-[#8892B0]">
                 <MapPin className="w-5 h-5 text-[#D4AF37] shrink-0 mt-1" />
                 <div>
-                  <p className="font-semibold text-white mb-1">Office Address:</p>
-                  <p>D-10 Ground Floor, Gali No. 19, Madhu Vihar, I.P Exten. Delhi - 110092</p>
+                  <p className="font-semibold text-white mb-1">Office Address</p>
+                  <p>D-10 Ground Floor, Gali No. 19, Madhu Vihar, I.P Extension, Delhi - 110092</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3 text-[#8892B0]">
+                <MapPin className="w-5 h-5 text-[#D4AF37] shrink-0 mt-1" />
+                <div>
+                  <p className="font-semibold text-white mb-1">Registered Address</p>
+                  <p>A/28, Second Floor, Gali No. 13, Mandawali Unchepar, East Delhi, Delhi - 110092</p>
                 </div>
               </div>
               <div className="flex flex-col gap-3">
@@ -123,7 +130,7 @@ export default function Footer() {
       <div className="bg-[#050C18] py-6 border-t border-[#172A45]">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[#8892B0]">
           <div className="flex flex-col md:flex-row items-center gap-2 text-center md:text-left">
-            <p>&copy; 2018 Chaudhary Travels. All rights reserved. <span className="text-xs font-bold text-green-500 ml-2 border border-green-500 px-1 rounded">v3.0 Live Fix</span></p>
+            <p>&copy; 2018 Chaudhary Travels. All rights reserved.</p>
             <span className="hidden md:inline text-[#172A45]">|</span>
             <p>GST: 07AZGPC2851E1ZR</p>
           </div>
