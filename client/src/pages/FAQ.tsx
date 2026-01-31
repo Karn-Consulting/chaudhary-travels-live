@@ -15,10 +15,17 @@ import Footer from "@/components/Footer";
 const PHONE_1 = "9540726566";
 const WHATSAPP = "919540726566";
 
-const faqs = [
+interface FAQ {
+  question: string;
+  answer: string;
+  isHtml?: boolean;
+}
+
+const faqs: FAQ[] = [
   {
     question: "How do I book a vehicle with Chaudhary Travels?",
-    answer: "Booking is simple! You can either fill out the quote form on our website, call us directly at 9540726566, or send us a WhatsApp message. Our team will get back to you within 30 minutes with the best pricing and availability."
+    answer: "Booking is simple! You can either fill out the quote form on our website, call us directly at <a href='tel:9540726566' class='text-primary hover:underline font-semibold'>9540726566</a>, or <a href='https://wa.me/919540726566?text=Hi, I would like to get a quote for vehicle rental.' target='_blank' rel='noopener noreferrer' class='text-[#25D366] hover:underline font-semibold'>send us a WhatsApp message</a>. Our team will get back to you within 30 minutes with the best pricing and availability.",
+    isHtml: true
   },
   {
     question: "What types of vehicles do you offer?",
@@ -119,9 +126,13 @@ export default function FAQ() {
                   >
                     <div className="overflow-hidden">
                       <div className="px-6 pb-6 pl-15 ml-9 border-l-2 border-primary/10">
-                        <p className="text-muted-foreground leading-relaxed">
-                          {faq.answer}
-                        </p>
+                        {faq.isHtml ? (
+                          <p className="text-muted-foreground leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                        ) : (
+                          <p className="text-muted-foreground leading-relaxed">
+                            {faq.answer}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
