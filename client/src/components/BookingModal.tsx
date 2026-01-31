@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { captureLead } from "@/lib/leadCapture";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -16,21 +17,36 @@ export default function BookingModal({ isOpen, onClose, vehicleName }: BookingMo
     email: "",
     phone: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) {
       toast.error("Please fill in all required fields");
       return;
     }
     
-    // Send to WhatsApp
-    const message = `New Booking Request:%0A%0AVehicle: ${vehicleName || "vehicle"}%0A%0AName: ${formData.name}%0AEmail: ${formData.email || 'Not provided'}%0APhone: ${formData.phone}`;
-    window.open(`https://wa.me/919540726566?text=${message}`, '_blank');
+    setIsSubmitting(true);
     
-    toast.success(`Booking request for ${vehicleName || "vehicle"} submitted! We'll contact you within 30 minutes.`);
-    onClose();
-    setFormData({ name: "", email: "", phone: "" });
+    try {
+      // Send lead via Web3Forms + WhatsApp
+      await captureLead({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        message: `Vehicle Booking Request: ${vehicleName || "Vehicle inquiry"}`,
+        vehicleType: vehicleName,
+        source: "Fleet Section - Booking Modal"
+      });
+      
+      toast.success(`Booking request for ${vehicleName || "vehicle"} submitted! We'll contact you within 30 minutes.`);
+      onClose();
+      setFormData({ name: "", email: "", phone: "" });
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -62,6 +78,7 @@ export default function BookingModal({ isOpen, onClose, vehicleName }: BookingMo
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="h-12 bg-gray-50"
               placeholder="Enter your name"
+              disabled={isSubmitting}
             />
           </div>
           
@@ -73,6 +90,7 @@ export default function BookingModal({ isOpen, onClose, vehicleName }: BookingMo
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               className="h-12 bg-gray-50"
               placeholder="Enter your email (optional)"
+              disabled={isSubmitting}
             />
           </div>
           
@@ -84,14 +102,16 @@ export default function BookingModal({ isOpen, onClose, vehicleName }: BookingMo
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               className="h-12 bg-gray-50"
               placeholder="Enter your mobile number"
+              disabled={isSubmitting}
             />
           </div>
           
           <Button
             type="submit"
+            disabled={isSubmitting}
             className="w-full bg-[#8B7355] hover:bg-[#6B5A45] text-white font-bold h-12 text-lg"
           >
-            Submit Request
+            {isSubmitting ? "Submitting..." : "Submit Request"}
           </Button>
           
           <p className="text-xs text-center text-muted-foreground">

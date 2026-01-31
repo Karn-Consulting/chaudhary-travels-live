@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { toast } from "sonner";
+import { captureLead } from "@/lib/leadCapture";
 
 const PHONE_NUMBER = "9540726566";
 
@@ -16,25 +18,39 @@ export default function CharDhamYatra() {
     mobile: "",
     groupSize: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const dhamText = selectedDham ? `Shrine: ${selectedDham}%0A` : "";
-    const message = `*Char Dham Yatra Booking Request*%0A%0A` +
-      dhamText +
-      `Name: ${formData.name}%0A` +
-      `Email: ${formData.email}%0A` +
-      `Mobile: ${formData.mobile}%0A` +
-      `Group Size: ${formData.groupSize}`;
+    if (!formData.name || !formData.mobile || !formData.groupSize) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
     
-    window.open(`https://wa.me/91${PHONE_NUMBER}?text=${message}`, '_blank');
-    setShowBookingModal(false);
-    setFormData({ name: "", email: "", mobile: "", groupSize: "" });
+    setIsSubmitting(true);
+    
+    try {
+      await captureLead({
+        name: formData.name,
+        phone: formData.mobile,
+        email: formData.email,
+        message: `Char Dham Yatra Booking - Group Size: ${formData.groupSize}${selectedDham ? `, Shrine: ${selectedDham}` : ""}`,
+        source: "Char Dham Yatra Page"
+      });
+      
+      toast.success("Booking request submitted! We'll contact you within 30 minutes.");
+      setShowBookingModal(false);
+      setFormData({ name: "", email: "", mobile: "", groupSize: "" });
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const dhams = [
@@ -231,6 +247,7 @@ export default function CharDhamYatra() {
                 <h3 className="text-2xl font-serif font-bold text-foreground">Book Char Dham Yatra</h3>
                 <button 
                   onClick={() => setShowBookingModal(false)}
+                  disabled={isSubmitting}
                   className="text-muted-foreground hover:text-foreground text-2xl leading-none"
                 >
                   ×
@@ -245,6 +262,7 @@ export default function CharDhamYatra() {
                     placeholder="Your Name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -254,6 +272,7 @@ export default function CharDhamYatra() {
                     placeholder="your@email.com"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -264,6 +283,7 @@ export default function CharDhamYatra() {
                     placeholder="Your Mobile Number"
                     value={formData.mobile}
                     onChange={(e) => setFormData({...formData, mobile: e.target.value})}
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -274,14 +294,16 @@ export default function CharDhamYatra() {
                     placeholder="Number of People"
                     value={formData.groupSize}
                     onChange={(e) => setFormData({...formData, groupSize: e.target.value})}
+                    disabled={isSubmitting}
                   />
                 </div>
 
                 <Button 
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-6"
                 >
-                  Submit Request
+                  {isSubmitting ? "Submitting..." : "Submit Request"}
                 </Button>
               </form>
 

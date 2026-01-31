@@ -3,6 +3,7 @@ import { X, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { captureLead } from "@/lib/leadCapture";
 
 export default function WelcomePopup() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ export default function WelcomePopup() {
     from: "",
     to: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     // Check if user has seen the popup before
@@ -30,19 +32,32 @@ export default function WelcomePopup() {
     sessionStorage.setItem("hasSeenWelcomePopup", "true");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) {
       toast.error("Please fill in your name and phone number");
       return;
     }
     
-    // Send to WhatsApp
-    const message = `New Lead from Welcome Popup:%0A%0AName: ${formData.name}%0APhone: ${formData.phone}%0AFrom: ${formData.from || 'Not specified'}%0ATo: ${formData.to || 'Not specified'}`;
-    window.open(`https://wa.me/919540726566?text=${message}`, '_blank');
+    setIsSubmitting(true);
     
-    toast.success("Thank you! We'll contact you within 30 minutes with the best quote.");
-    handleClose();
+    try {
+      // Send lead via Web3Forms + WhatsApp
+      await captureLead({
+        name: formData.name,
+        phone: formData.phone,
+        from: formData.from,
+        to: formData.to,
+        source: "Welcome Popup"
+      });
+      
+      toast.success("Thank you! We'll contact you within 30 minutes with the best quote.");
+      handleClose();
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -58,6 +73,7 @@ export default function WelcomePopup() {
             onClick={handleClose}
             className="absolute top-3 right-3 bg-white/20 hover:bg-white/40 rounded-full p-2 transition-colors z-50 cursor-pointer"
             aria-label="Close popup"
+            disabled={isSubmitting}
           >
             <X className="w-5 h-5 text-white" />
           </button>
@@ -87,6 +103,7 @@ export default function WelcomePopup() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="h-11 bg-gray-50"
                   placeholder="Your Name *"
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -96,6 +113,7 @@ export default function WelcomePopup() {
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="h-11 bg-gray-50"
                   placeholder="Mobile Number *"
+                  disabled={isSubmitting}
                 />
               </div>
             </div>
@@ -107,6 +125,7 @@ export default function WelcomePopup() {
                   onChange={(e) => setFormData({ ...formData, from: e.target.value })}
                   className="h-11 bg-gray-50"
                   placeholder="From City"
+                  disabled={isSubmitting}
                 />
               </div>
               <div>
@@ -115,15 +134,17 @@ export default function WelcomePopup() {
                   onChange={(e) => setFormData({ ...formData, to: e.target.value })}
                   className="h-11 bg-gray-50"
                   placeholder="To City"
+                  disabled={isSubmitting}
                 />
               </div>
             </div>
 
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="w-full bg-[#8B7355] hover:bg-[#6B5A45] text-white font-bold h-12 text-base"
             >
-              Get Free Quote <ArrowRight className="w-4 h-4 ml-2" />
+              {isSubmitting ? "Submitting..." : <>Get Free Quote <ArrowRight className="w-4 h-4 ml-2" /></>}
             </Button>
           </form>
 
@@ -139,6 +160,7 @@ export default function WelcomePopup() {
 
           <button
             onClick={handleClose}
+            disabled={isSubmitting}
             className="w-full mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             No thanks, I'll browse first

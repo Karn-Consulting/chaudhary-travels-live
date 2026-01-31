@@ -3,6 +3,7 @@ import { X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { captureLead } from "@/lib/leadCapture";
 
 interface Route {
   id: number;
@@ -88,26 +89,42 @@ export default function PopularRoutes() {
     email: "",
     phone: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleRouteClick = (route: Route) => {
     setSelectedRoute(route);
     setShowModal(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) {
       toast.error("Please fill in all required fields");
       return;
     }
     
-    // Send to WhatsApp
-    const message = `New Lead from Popular Routes:%0A%0ARoute: ${selectedRoute?.from} to ${selectedRoute?.to}%0ADistance: ${selectedRoute?.distance}%0ADuration: ${selectedRoute?.duration}%0A%0AName: ${formData.name}%0AEmail: ${formData.email || 'Not provided'}%0APhone: ${formData.phone}`;
-    window.open(`https://wa.me/919540726566?text=${message}`, '_blank');
+    setIsSubmitting(true);
     
-    toast.success(`Quote request for ${selectedRoute?.from} to ${selectedRoute?.to} submitted! We'll contact you shortly.`);
-    setShowModal(false);
-    setFormData({ name: "", email: "", phone: "" });
+    try {
+      // Send lead via Web3Forms + WhatsApp
+      await captureLead({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        from: selectedRoute?.from,
+        to: selectedRoute?.to,
+        message: `Route: ${selectedRoute?.from} to ${selectedRoute?.to} (${selectedRoute?.distance}, ${selectedRoute?.duration})`,
+        source: "Popular Routes Section"
+      });
+      
+      toast.success(`Quote request for ${selectedRoute?.from} to ${selectedRoute?.to} submitted! We'll contact you shortly.`);
+      setShowModal(false);
+      setFormData({ name: "", email: "", phone: "" });
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -170,6 +187,7 @@ export default function PopularRoutes() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
               <button
                 onClick={() => setShowModal(false)}
+                disabled={isSubmitting}
                 className="absolute top-3 right-3 bg-white/90 hover:bg-white rounded-full p-2 transition-colors"
               >
                 <X className="w-5 h-5 text-gray-700" />
@@ -197,6 +215,7 @@ export default function PopularRoutes() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="h-12 bg-gray-50"
                   placeholder="Enter your name"
+                  disabled={isSubmitting}
                 />
               </div>
               
@@ -208,6 +227,7 @@ export default function PopularRoutes() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="h-12 bg-gray-50"
                   placeholder="Enter your email (optional)"
+                  disabled={isSubmitting}
                 />
               </div>
               
@@ -219,14 +239,16 @@ export default function PopularRoutes() {
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   className="h-12 bg-gray-50"
                   placeholder="Enter your mobile number"
+                  disabled={isSubmitting}
                 />
               </div>
               
               <Button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full bg-[#8B7355] hover:bg-[#6B5A45] text-white font-bold h-12 text-lg"
               >
-                Submit Request
+                {isSubmitting ? "Submitting..." : "Submit Request"}
               </Button>
               
               <p className="text-xs text-center text-muted-foreground">

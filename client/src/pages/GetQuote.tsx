@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { captureLead } from "@/lib/leadCapture";
 
 export default function GetQuote() {
   // Scroll to top when page loads
@@ -25,15 +26,49 @@ export default function GetQuote() {
     phone: "",
     email: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.from || !formData.to || !formData.startDate || !formData.name || !formData.phone) {
       toast.error("Please fill in all required fields");
       return;
     }
-    toast.success("Quote request submitted! We'll contact you within 30 minutes.");
-    // Reset form or redirect
+    
+    setIsSubmitting(true);
+    
+    try {
+      await captureLead({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        from: formData.from,
+        to: formData.to,
+        date: formData.startDate,
+        returnDate: formData.tripType === "round_trip" ? formData.returnDate : undefined,
+        tripType: formData.tripType === "round_trip" ? "Round Trip" : "One Way",
+        acType: formData.acType === "ac" ? "AC" : "Non-AC",
+        source: "Get Quote Page"
+      });
+      
+      toast.success("Quote request submitted! We'll contact you within 30 minutes.");
+      // Reset form
+      setFormData({
+        tripType: "round_trip",
+        from: "",
+        to: "",
+        startDate: "",
+        returnDate: "",
+        acType: "ac",
+        name: "",
+        phone: "",
+        email: ""
+      });
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -66,6 +101,7 @@ export default function GetQuote() {
                         <button
                           type="button"
                           onClick={() => setFormData({...formData, tripType: "round_trip"})}
+                          disabled={isSubmitting}
                           className={`px-8 py-3 rounded-md font-semibold transition-all ${
                             formData.tripType === "round_trip" 
                               ? "bg-white text-primary shadow-sm" 
@@ -77,6 +113,7 @@ export default function GetQuote() {
                         <button
                           type="button"
                           onClick={() => setFormData({...formData, tripType: "one_way"})}
+                          disabled={isSubmitting}
                           className={`px-8 py-3 rounded-md font-semibold transition-all ${
                             formData.tripType === "one_way" 
                               ? "bg-white text-primary shadow-sm" 
@@ -101,6 +138,7 @@ export default function GetQuote() {
                               onChange={(e) => setFormData({...formData, from: e.target.value})}
                               className="h-12 bg-background"
                               placeholder="Pickup City"
+                              disabled={isSubmitting}
                             />
                           </div>
                           <div className="space-y-2">
@@ -111,6 +149,7 @@ export default function GetQuote() {
                               onChange={(e) => setFormData({...formData, to: e.target.value})}
                               className="h-12 bg-background"
                               placeholder="Drop City"
+                              disabled={isSubmitting}
                             />
                           </div>
                           <div className="grid grid-cols-2 gap-4">
@@ -122,6 +161,7 @@ export default function GetQuote() {
                                 value={formData.startDate}
                                 onChange={(e) => setFormData({...formData, startDate: e.target.value})}
                                 className="h-12 bg-background"
+                                disabled={isSubmitting}
                               />
                             </div>
                             <div className="space-y-2">
@@ -131,7 +171,7 @@ export default function GetQuote() {
                                 value={formData.returnDate}
                                 onChange={(e) => setFormData({...formData, returnDate: e.target.value})}
                                 className="h-12 bg-background"
-                                disabled={formData.tripType === "one_way"}
+                                disabled={formData.tripType === "one_way" || isSubmitting}
                               />
                             </div>
                           </div>
@@ -150,6 +190,7 @@ export default function GetQuote() {
                                   className="hidden" 
                                   checked={formData.acType === "ac"} 
                                   onChange={() => setFormData({...formData, acType: "ac"})}
+                                  disabled={isSubmitting}
                                 />
                                 <span className={`font-medium ${formData.acType === "ac" ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>AC Vehicle</span>
                               </label>
@@ -164,6 +205,7 @@ export default function GetQuote() {
                                   className="hidden" 
                                   checked={formData.acType === "non_ac"} 
                                   onChange={() => setFormData({...formData, acType: "non_ac"})}
+                                  disabled={isSubmitting}
                                 />
                                 <span className={`font-medium ${formData.acType === "non_ac" ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>Non-AC Vehicle</span>
                               </label>
@@ -184,6 +226,7 @@ export default function GetQuote() {
                               onChange={(e) => setFormData({...formData, name: e.target.value})}
                               className="h-12 bg-background"
                               placeholder="Your Name"
+                              disabled={isSubmitting}
                             />
                           </div>
                           <div className="space-y-2">
@@ -194,6 +237,7 @@ export default function GetQuote() {
                               onChange={(e) => setFormData({...formData, phone: e.target.value})}
                               className="h-12 bg-background"
                               placeholder="Your Mobile Number"
+                              disabled={isSubmitting}
                             />
                           </div>
                           <div className="space-y-2">
@@ -204,6 +248,7 @@ export default function GetQuote() {
                               onChange={(e) => setFormData({...formData, email: e.target.value})}
                               className="h-12 bg-background"
                               placeholder="Your Email (Optional)"
+                              disabled={isSubmitting}
                             />
                           </div>
                         </div>
@@ -216,9 +261,10 @@ export default function GetQuote() {
 
                     <Button
                       type="submit"
+                      disabled={isSubmitting}
                       className="w-full btn-gold h-14 text-lg font-bold rounded-md"
                     >
-                      GET MY FREE QUOTE
+                      {isSubmitting ? "SUBMITTING..." : "GET MY FREE QUOTE"}
                     </Button>
                   </form>
                 </CardContent>

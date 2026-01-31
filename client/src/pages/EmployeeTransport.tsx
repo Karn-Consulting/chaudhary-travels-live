@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { captureLead } from "@/lib/leadCapture";
 
 // Shuttle Options
 const shuttleOptions = {
@@ -126,15 +127,35 @@ export default function EmployeeTransport() {
     officeLocation: "",
     comments: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.company) {
       toast.error("Please fill in all required fields");
       return;
     }
-    toast.success("Thank you! Our corporate team will contact you shortly.");
-    setFormData({ name: "", phone: "", email: "", company: "", officeLocation: "", comments: "" });
+    
+    setIsSubmitting(true);
+    
+    try {
+      await captureLead({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        company: formData.company,
+        from: formData.officeLocation,
+        message: `Corporate Employee Transport Inquiry\n\nCompany: ${formData.company}\nOffice Location: ${formData.officeLocation || 'Not specified'}\nComments: ${formData.comments || 'None'}`,
+        source: "Employee Transport Page"
+      });
+      
+      toast.success("Thank you! Our corporate team will contact you shortly.");
+      setFormData({ name: "", phone: "", email: "", company: "", officeLocation: "", comments: "" });
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -326,6 +347,7 @@ export default function EmployeeTransport() {
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         className="bg-background"
+                        disabled={isSubmitting}
                       />
                     </div>
                     <div className="space-y-2">
@@ -336,16 +358,18 @@ export default function EmployeeTransport() {
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
                         className="bg-background"
+                        disabled={isSubmitting}
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Email</label>
                       <Input
-                        placeholder="Email Id *"
+                        placeholder="Email Id"
                         type="email"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         className="bg-background"
+                        disabled={isSubmitting}
                       />
                     </div>
                   </div>
@@ -359,15 +383,17 @@ export default function EmployeeTransport() {
                         value={formData.company}
                         onChange={(e) => setFormData({...formData, company: e.target.value})}
                         className="bg-background"
+                        disabled={isSubmitting}
                       />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Office Location</label>
                       <Input
-                        placeholder="Office Location *"
+                        placeholder="Office Location"
                         value={formData.officeLocation}
                         onChange={(e) => setFormData({...formData, officeLocation: e.target.value})}
                         className="bg-background"
+                        disabled={isSubmitting}
                       />
                     </div>
                   </div>
@@ -379,12 +405,17 @@ export default function EmployeeTransport() {
                       value={formData.comments}
                       onChange={(e) => setFormData({...formData, comments: e.target.value})}
                       className="bg-background min-h-[100px]"
+                      disabled={isSubmitting}
                     />
                   </div>
 
                   <div className="text-center pt-4">
-                    <Button type="submit" className="btn-gold px-12 py-6 text-lg font-bold rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">
-                      PROCEED
+                    <Button 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="btn-gold px-12 py-6 text-lg font-bold rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all"
+                    >
+                      {isSubmitting ? "SUBMITTING..." : "PROCEED"}
                     </Button>
                   </div>
                 </form>

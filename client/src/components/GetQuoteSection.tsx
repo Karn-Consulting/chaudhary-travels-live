@@ -8,6 +8,8 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
+import { toast } from "sonner";
+import { captureLead } from "@/lib/leadCapture";
 import {
   Popover,
   PopoverContent,
@@ -20,6 +22,52 @@ export default function GetQuoteSection() {
   const [returnDate, setReturnDate] = useState<Date>();
   const [acType, setAcType] = useState<"ac" | "non-ac">("ac");
   const [agreed, setAgreed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    from: "",
+    to: "",
+    phone: ""
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.from || !formData.to || !formData.phone) {
+      toast.error("Please fill in From, To, and Phone number");
+      return;
+    }
+    
+    if (!agreed) {
+      toast.error("Please agree to the Terms & Conditions");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      await captureLead({
+        phone: formData.phone,
+        from: formData.from,
+        to: formData.to,
+        date: startDate ? format(startDate, "dd/MM/yyyy") : undefined,
+        returnDate: returnDate && tripType === "round-trip" ? format(returnDate, "dd/MM/yyyy") : undefined,
+        tripType: tripType === "round-trip" ? "Round Trip" : "One Way",
+        acType: acType === "ac" ? "AC" : "Non-AC",
+        source: "Home Page - Get Quote Section"
+      });
+      
+      toast.success("Quote request submitted! We'll contact you within 30 minutes.");
+      // Reset form
+      setFormData({ from: "", to: "", phone: "" });
+      setStartDate(undefined);
+      setReturnDate(undefined);
+      setAgreed(false);
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section className="py-16 bg-background border-t border-border">
@@ -31,10 +79,11 @@ export default function GetQuoteSection() {
           </p>
         </div>
 
-        <div className="bg-card p-6 md:p-8 rounded-lg shadow-sm border border-border/50">
+        <form onSubmit={handleSubmit} className="bg-card p-6 md:p-8 rounded-lg shadow-sm border border-border/50">
           {/* Trip Type Tabs */}
           <div className="flex gap-6 mb-8 border-b border-border/50 pb-1">
             <button
+              type="button"
               onClick={() => setTripType("round-trip")}
               className={cn(
                 "pb-2 text-lg font-medium transition-colors relative",
@@ -47,6 +96,7 @@ export default function GetQuoteSection() {
             </button>
             <span className="text-muted-foreground/30 text-lg">|</span>
             <button
+              type="button"
               onClick={() => setTripType("one-way")}
               className={cn(
                 "pb-2 text-lg font-medium transition-colors relative",
@@ -62,8 +112,16 @@ export default function GetQuoteSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             {/* From */}
             <div className="space-y-2">
-              <Label htmlFor="from" className="font-serif font-bold text-foreground">From</Label>
-              <Input id="from" placeholder="" className="h-12 bg-background border-muted focus:border-primary transition-colors" />
+              <Label htmlFor="from" className="font-serif font-bold text-foreground">From *</Label>
+              <Input 
+                id="from" 
+                placeholder="Enter pickup city" 
+                className="h-12 bg-background border-muted focus:border-primary transition-colors"
+                value={formData.from}
+                onChange={(e) => setFormData({ ...formData, from: e.target.value })}
+                disabled={isSubmitting}
+                required
+              />
             </div>
 
             {/* Start Date */}
@@ -72,13 +130,15 @@ export default function GetQuoteSection() {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
+                    type="button"
                     variant={"outline"}
+                    disabled={isSubmitting}
                     className={cn(
                       "w-full h-12 justify-between text-left font-normal",
                       !startDate && "text-muted-foreground"
                     )}
                   >
-                    {startDate ? format(startDate, "MM/dd/yyyy") : "MM/DD/YYYY"}
+                    {startDate ? format(startDate, "dd/MM/yyyy") : "DD/MM/YYYY"}
                     <CalendarIcon className="mr-2 h-5 w-5 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -95,16 +155,25 @@ export default function GetQuoteSection() {
 
             {/* To */}
             <div className="space-y-2">
-              <Label htmlFor="to" className="font-serif font-bold text-foreground">To</Label>
-              <Input id="to" placeholder="" className="h-12 bg-background border-muted focus:border-primary transition-colors" />
+              <Label htmlFor="to" className="font-serif font-bold text-foreground">To *</Label>
+              <Input 
+                id="to" 
+                placeholder="Enter destination city" 
+                className="h-12 bg-background border-muted focus:border-primary transition-colors"
+                value={formData.to}
+                onChange={(e) => setFormData({ ...formData, to: e.target.value })}
+                disabled={isSubmitting}
+                required
+              />
             </div>
 
             {/* Return Date (Only for Round Trip) */}
             <div className="space-y-2">
               <Label className={cn("font-serif font-bold text-foreground", tripType === "one-way" && "text-muted-foreground/50")}>Return Date</Label>
               <Popover>
-                <PopoverTrigger asChild disabled={tripType === "one-way"}>
+                <PopoverTrigger asChild disabled={tripType === "one-way" || isSubmitting}>
                   <Button
+                    type="button"
                     variant={"outline"}
                     className={cn(
                       "w-full h-12 justify-between text-left font-normal",
@@ -112,7 +181,7 @@ export default function GetQuoteSection() {
                       tripType === "one-way" && "opacity-50 cursor-not-allowed bg-muted"
                     )}
                   >
-                    {returnDate ? format(returnDate, "MM/dd/yyyy") : "MM/DD/YYYY"}
+                    {returnDate ? format(returnDate, "dd/MM/yyyy") : "DD/MM/YYYY"}
                     <CalendarIcon className="mr-2 h-5 w-5 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -128,15 +197,32 @@ export default function GetQuoteSection() {
             </div>
           </div>
 
+          {/* Phone Number */}
+          <div className="mb-6">
+            <div className="space-y-2">
+              <Label htmlFor="phone" className="font-serif font-bold text-foreground">Mobile Number *</Label>
+              <Input 
+                id="phone" 
+                type="tel"
+                placeholder="Enter your mobile number" 
+                className="h-12 bg-background border-muted focus:border-primary transition-colors max-w-md"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                disabled={isSubmitting}
+                required
+              />
+            </div>
+          </div>
+
           {/* AC / Non-AC Radio */}
           <div className="mb-8">
             <RadioGroup defaultValue="ac" onValueChange={(v) => setAcType(v as "ac" | "non-ac")} className="flex gap-8">
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="ac" id="ac" className="w-5 h-5 border-2 border-primary text-primary" />
+                <RadioGroupItem value="ac" id="ac" className="w-5 h-5 border-2 border-primary text-primary" disabled={isSubmitting} />
                 <Label htmlFor="ac" className="font-serif font-bold text-base cursor-pointer">AC</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="non-ac" id="non-ac" className="w-5 h-5 border-2 border-primary text-primary" />
+                <RadioGroupItem value="non-ac" id="non-ac" className="w-5 h-5 border-2 border-primary text-primary" disabled={isSubmitting} />
                 <Label htmlFor="non-ac" className="font-serif font-bold text-base cursor-pointer">Non-AC</Label>
               </div>
             </RadioGroup>
@@ -149,6 +235,7 @@ export default function GetQuoteSection() {
               checked={agreed}
               onCheckedChange={(c) => setAgreed(c as boolean)}
               className="mt-1 border-muted-foreground"
+              disabled={isSubmitting}
             />
             <Label htmlFor="terms" className="text-sm font-medium leading-tight">
               By confirming, you agree to our <a href="/terms" className="text-blue-500 hover:underline">Terms & Conditions</a> & give us consent to contact you via call, WhatsApp & email.
@@ -158,12 +245,14 @@ export default function GetQuoteSection() {
           {/* Proceed Button */}
           <div className="flex justify-center">
             <Button 
+              type="submit"
+              disabled={isSubmitting}
               className="btn-gold font-serif font-bold text-lg px-12 py-6 rounded-full uppercase tracking-wide w-full md:w-auto min-w-[200px]"
             >
-              PROCEED
+              {isSubmitting ? "SUBMITTING..." : "PROCEED"}
             </Button>
           </div>
-        </div>
+        </form>
       </div>
     </section>
   );
