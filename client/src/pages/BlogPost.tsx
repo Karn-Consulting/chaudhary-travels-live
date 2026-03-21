@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import SEO from "@/components/SEO";
 
 export default function BlogPost() {
   const [, params] = useRoute("/blogs/:id");
@@ -13,6 +14,7 @@ export default function BlogPost() {
   if (!blog) {
     return (
       <div className="min-h-screen bg-background flex flex-col font-sans">
+        <SEO title="Article Not Found" noindex={true} />
         <Header />
         <div className="flex-grow flex items-center justify-center">
           <div className="text-center">
@@ -29,6 +31,23 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
+      <SEO
+        title={blog.title}
+        description={blog.excerpt}
+        canonical={`/blogs/${blog.id}`}
+        ogType="article"
+        ogImage={blog.heroImage}
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          "headline": blog.title,
+          "description": blog.excerpt,
+          "author": { "@type": "Person", "name": blog.author },
+          "datePublished": blog.date,
+          "publisher": { "@type": "Organization", "name": "Chaudhary Travels" },
+          "image": `https://www.chaudharytravels.co.in${blog.heroImage}`
+        }}
+      />
       <Header />
       
       <main className="flex-grow pt-24 pb-16">

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import SEO from "@/components/SEO";
 import { 
   Phone, 
   Users, 
@@ -262,6 +263,36 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
+      <SEO
+        title="Premium Vehicle Rental & Concierge Services"
+        description="Chaudhary Travels offers luxury car rentals, tempo travellers, buses, and corporate employee transport services across India. Professional chauffeurs, 24/7 support, PAN India coverage."
+        canonical="/"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "Chaudhary Travels",
+          "description": "Premium vehicle rental and concierge services across India including luxury cars, tempo travellers, buses, and corporate employee transport.",
+          "url": "https://www.chaudharytravels.co.in",
+          "telephone": "+919540726566",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "IN"
+          },
+          "priceRange": "$$",
+          "sameAs": [],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Vehicle Rental Services",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Luxury Car Rental" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Tempo Traveller Rental" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Bus Rental" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Corporate Employee Transport" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Char Dham Yatra Packages" } }
+            ]
+          }
+        }}
+      />
       <Header />
 
       <main className="flex-grow">

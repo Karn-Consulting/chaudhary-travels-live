@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import SEO from "@/components/SEO";
 import { CheckCircle2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -73,6 +74,11 @@ export default function GetQuote() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
+      <SEO
+        title="Get a Quote - Vehicle Rental Pricing"
+        description="Get instant pricing for luxury car rentals, tempo travellers, buses, and corporate transport from Chaudhary Travels. Free quotes, transparent pricing, no hidden charges."
+        canonical="/get-quote"
+      />
       <Header />
 
       <main className="flex-grow">

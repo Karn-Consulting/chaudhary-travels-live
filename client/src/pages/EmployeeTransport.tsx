@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import SEO from "@/components/SEO";
 import { 
   Building2, 
   Shield, 
@@ -160,6 +161,19 @@ export default function EmployeeTransport() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
+      <SEO
+        title="Corporate Employee Transport Solutions"
+        description="Reliable corporate employee transport services across India. Tempo travellers, mini buses, luxury coaches with GPS tracking, professional drivers, and 24/7 support for your workforce."
+        canonical="/employee-transport"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Corporate Employee Transport",
+          "provider": { "@type": "Organization", "name": "Chaudhary Travels" },
+          "description": "Reliable corporate employee transport services across India with GPS tracking, professional drivers, and 24/7 support.",
+          "areaServed": { "@type": "Country", "name": "India" }
+        }}
+      />
       <Header />
 
       <main className="flex-grow">

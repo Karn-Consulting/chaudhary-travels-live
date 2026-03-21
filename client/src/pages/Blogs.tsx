@@ -4,10 +4,16 @@ import { ArrowRight, Calendar, User } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 export default function Blogs() {
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
+      <SEO
+        title="Travel Blog & Insights"
+        description="Expert travel advice, luxury transportation tips, corporate transport guides, and industry insights from Chaudhary Travels — India's premium vehicle rental service."
+        canonical="/blogs"
+      />
       <Header />
       
       <main className="flex-grow pt-24 pb-16">

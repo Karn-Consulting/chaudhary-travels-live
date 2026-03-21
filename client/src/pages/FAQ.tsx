@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import SEO from "@/components/SEO";
 import { 
   Phone, 
   MessageCircle, 
@@ -74,6 +75,23 @@ export default function FAQ() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col font-sans">
+      <SEO
+        title="Frequently Asked Questions"
+        description="Find answers to common questions about Chaudhary Travels — vehicle types, booking process, pricing, cancellation policy, employee transport, and 24/7 customer support."
+        canonical="/faq"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer.replace(/<[^>]*>/g, '')
+            }
+          }))
+        }}
+      />
       <Header />
 
       <main className="flex-grow">

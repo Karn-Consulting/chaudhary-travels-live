@@ -37,9 +37,9 @@ export default function Header() {
               className="h-16 md:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105 mix-blend-multiply" 
             />
             <div className="hidden sm:block">
-              <h1 className="text-xl font-serif font-bold text-[#0A192F] leading-none tracking-tight">
+              <span className="text-xl font-serif font-bold text-[#0A192F] leading-none tracking-tight block">
                 CHAUDHARY TRAVELS
-              </h1>
+              </span>
               <p className="text-xs text-[#D4AF37] font-medium tracking-widest uppercase">
                 Premium Concierge
               </p>

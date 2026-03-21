@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Phone, MapPin, Calendar, Users, CheckCircle2, Mountain, Heart, Star } from "lucide-react";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Header from "@/components/Header";
@@ -91,6 +92,19 @@ export default function CharDhamYatra() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      <SEO
+        title="Char Dham Yatra Packages - Kedarnath, Badrinath, Gangotri, Yamunotri"
+        description="Book premium Char Dham Yatra packages with Chaudhary Travels. Comfortable vehicles, experienced drivers, and customized pilgrimage itineraries to Kedarnath, Badrinath, Gangotri, and Yamunotri."
+        canonical="/char-dham-yatra"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "TouristTrip",
+          "name": "Char Dham Yatra Package",
+          "description": "Premium Char Dham Yatra pilgrimage packages with comfortable vehicles and experienced drivers.",
+          "touristType": "Pilgrimage",
+          "provider": { "@type": "Organization", "name": "Chaudhary Travels", "telephone": "+919540726566" }
+        }}
+      />
       <Header />
 
       <main className="flex-grow">
